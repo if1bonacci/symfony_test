@@ -11,9 +11,9 @@ Dev stack is a PHP/React dev environment based on Docker.
 
 * PHP 8.2
 * Symfony 6.2
-* Nginx
-* MailHog
-* RabbitMQ
+* Nginx 1.22.1
+* MailHog 1.14.7
+* RabbitMQ 3.11.11
 
 ## Symfony components
 
@@ -61,11 +61,17 @@ make up
 7. Install vendors
 ```bash
 docker exec -it php_v21_0_5 composer install
+
+# same thing here you can use the Makefile
+make composer
 ```
 
 8. Run messenger listener
 ```bash
 docker exec -it php_v21_0_5 php bin/console messenger:consume amqp_email_notification -vv
+
+# same thing here you can use the Makefile
+make messenger
 ```
 
 9. Run tests
