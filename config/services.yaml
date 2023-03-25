@@ -31,3 +31,8 @@ services:
   App\EventListener\ExceptionListener:
     tags:
       - { name: kernel.event_listener, event: kernel.exception }
+  
+  app.dto.serializer:
+    class: 'App\Service\Serializer\DTOSerializer'
+
+  Symfony\Component\Serializer\SerializerInterface $dtoSerializer: '@app.dto.serializer'

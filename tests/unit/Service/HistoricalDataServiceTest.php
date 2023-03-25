@@ -10,8 +10,6 @@ use App\Service\HistoricalData\HistoricalDataService;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class HistoricalDataServiceTest extends TestCase
@@ -94,20 +92,12 @@ class HistoricalDataServiceTest extends TestCase
             ->with(self::LIST_OF_PRICES, Price::class, 'json')
             ->willReturn($mockPrice);
 
-        $mockValidation = $this->createMock(ValidatorInterface::class);
-        $mockValidatorConstrain = $this->createMock(ConstraintViolationListInterface::class);
-        $mockValidation
-            ->expects(self::once())
-            ->method('validate')
-            ->willReturn($mockValidatorConstrain);
-
         $historicalDataService = new HistoricalDataService(
             $mockHttpClient,
             $containerBag,
             $mockSerializer,
             $mockRequestBuilder,
             $mockOptions,
-            $mockValidation
         );
 
         $mockPriceReqDto = $this->createMock(PricesListRequestInterface::class);

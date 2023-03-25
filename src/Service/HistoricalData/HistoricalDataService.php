@@ -26,7 +26,6 @@ class HistoricalDataService implements HistoricalDataInterface
         private readonly SerializerInterface     $dtoSerializer,
         private readonly RequestBuilderInterface $requestBuilder,
         private readonly OptionInterface         $option,
-        private readonly ValidatorInterface      $validator
     )
     {
     }
@@ -41,16 +40,8 @@ class HistoricalDataService implements HistoricalDataInterface
                 self::REQUEST_FIELD => $dto->getSymbol()
             ]))
             ->send();
-
         $priceDto = $this->dtoSerializer->deserialize($response, Price::class, JsonEncoder::FORMAT);
-        $violations = $this->validator->validate($priceDto);
-        if (count($violations) > 0) {
-            throw new ApiException(new ValidationExceptionData(
-                JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
-                ValidationExceptionData::ERROR_NAME,
-                $violations
-            ));
-        }
+
         return $priceDto->getPrices();
     }
 }

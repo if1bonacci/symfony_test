@@ -14,12 +14,18 @@ class ApiController
     #[Route('/prices-list', methods: ['POST'])]
     public function pricesList(Request $request, PriceListInterface $priceListService): JsonResponse
     {
-        return new JsonResponse($priceListService->handleHistoricalData($request->getContent()), JsonResponse::HTTP_OK);
+        return new JsonResponse(
+            $priceListService->handleHistoricalData($request->getContent()),
+            JsonResponse::HTTP_OK
+        );
     }
 
     #[Route('/list-of-symbols', methods: ['GET'])]
     public function listOfSymbols(SymbolsList $symbolsList): JsonResponse
     {
-        return new JsonResponse($symbolsList->getListOfSymbols(), JsonResponse::HTTP_OK);
+        return new JsonResponse(
+            $symbolsList->getListOfSymbols(),
+            JsonResponse::HTTP_OK
+        );
     }
 }
