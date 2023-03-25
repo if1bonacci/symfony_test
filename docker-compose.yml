@@ -29,6 +29,23 @@ services:
     networks:
       - symfony
 
+  react:
+    container_name: react_v21_0_5
+    build:
+      context: ./frontend
+      args:
+        backend_port: '${NGINX_PORT}'
+    ports:
+      - '${REACT_PORT}:3000'
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    stdin_open: true
+    depends_on:
+      - php
+    networks:
+      - symfony
+
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq_v21_0_5

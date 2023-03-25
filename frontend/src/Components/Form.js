@@ -11,7 +11,7 @@ function MyForm() {
     symbol: 'GOOG',
     email: 'asdas@sadf.re'
   }
-
+  console.log(234234234)
   const [formData, setFormData] = useState(initialState)
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
