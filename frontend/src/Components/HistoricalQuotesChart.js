@@ -11,6 +11,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 
 function HistoricalQuotesChart(props) {
+  const [prices, setPrices] = React.useState(props.prices);
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -33,19 +34,19 @@ function HistoricalQuotesChart(props) {
     },
   };
 
-  const labels = props.map((item) => item.date);
+  const labels = prices.map((item) => new Date(item.date * 1000).toUTCString());
 
   const data = {
     labels,
     datasets: [
       {
         label: 'Dataset Open',
-        data: props.map((item) => item.open),
+        data: prices.map((item) => item.open),
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
         label: 'Dataset Close',
-        data: props.map((item) => item.close),
+        data: prices.map((item) => item.close),
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
     ],

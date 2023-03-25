@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import axiosInstance from '../Services/ApiCallService';
 import { ThreeCircles } from  'react-loader-spinner';
 import HistoricalQuotes from './HistoricalQuotes'
+import HistoricalQuotesChart from './HistoricalQuotesChart';
 
 function MyForm() {
   let initialState = {
@@ -192,7 +193,11 @@ function MyForm() {
         </div>
       </div>
       <div className="row">
-
+        {response.length > 0 &&
+          <HistoricalQuotesChart
+            prices={response}
+          />
+        }
       </div>
     </>
   );

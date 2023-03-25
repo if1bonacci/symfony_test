@@ -2,8 +2,6 @@ import React from "react";
 
 function HistoricalQuotes(props) {
   const [prices, setPrices] = React.useState(props.prices);
-  const [startDate, setStartDate] = React.useState(new Date(props.startDate).getTime());
-  const [endDate, setEndDate] = React.useState(new Date(props.endDate).getTime());
 
   return (
     <>
