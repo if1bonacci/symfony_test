@@ -1,12 +1,14 @@
 FROM php:8.2-fpm
 
 RUN apt update \
-    && apt install libxml2-dev -y zlib1g-dev openssh-client unzip g++ libicu-dev libpng-dev \
+    && apt install libxml2-dev -y zlib1g-dev librabbitmq-dev openssh-client unzip vim g++ libicu-dev libpng-dev \
     libzip-dev zip mc \
     telnet curl\
     && docker-php-ext-install intl opcache pdo sockets zip soap gd pdo_mysql \
     && pecl install apcu \
+    && pecl install amqp \
     && docker-php-ext-enable apcu \
+    && docker-php-ext-enable amqp \
     && docker-php-ext-configure intl \
     && docker-php-ext-install intl
 

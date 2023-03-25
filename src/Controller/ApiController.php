@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Symbol\SymbolsList;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,5 +30,11 @@ class ApiController extends AbstractController
         }
 
         return $this->json(['name' => 'John Doe'], JsonResponse::HTTP_OK);
+    }
+
+    #[Route('/list-of-symbols', methods: ['GET'])]
+    public function listOfSymbols(SymbolsList $symbolsList): JsonResponse
+    {
+        return $this->json($symbolsList->getListOfSymbols(), JsonResponse::HTTP_OK);
     }
 }

@@ -12,14 +12,10 @@ class PricesListRequest
     #[AcmeAssert\IsValidSymbol]
     protected string $symbol;
     #[Assert\NotBlank]
-    #[Assert\DateTime]
     #[Assert\LessThanOrEqual(propertyPath: 'endDate')]
     #[Assert\LessThanOrEqual(value: 'today')]
-    #[AcmeAssert\IsValidDate]
     protected DateTime $startDate;
     #[Assert\NotBlank]
-    #[Assert\DateTime]
-    #[AcmeAssert\IsValidDate]
     #[Assert\GreaterThanOrEqual(propertyPath: 'startDate')]
     #[Assert\LessThanOrEqual(value: 'today')]
     protected DateTime $endDate;

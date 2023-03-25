@@ -5,7 +5,7 @@ namespace App\Validator;
 use Symfony\Component\Validator\Constraint;
 
 #[\Attribute]
-class IsValidSymbol
+class IsValidSymbol extends Constraint
 {
     public string $message = 'The symbol "{{ string }}" is inappropriate.';
 
