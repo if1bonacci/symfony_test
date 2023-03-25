@@ -43,6 +43,6 @@ make up
 ```
 6. Install vendors
 ```bash
-docker exec -it php composer install
+docker exec -it php_v21_0_5 composer install
 ```
 

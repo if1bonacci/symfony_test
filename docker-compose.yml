@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   php:
-    container_name: php
+    container_name: php_v21_0_5
     build:
       context: ./docker/php
     ports:
@@ -14,7 +14,7 @@ services:
       - symfony
 
   nginx:
-    container_name: nginx
+    container_name: nginx_v21_0_5
     image: nginx:stable-alpine
     ports:
       - '${NGINX_PORT}:80'
@@ -27,7 +27,7 @@ services:
       - symfony
   
   mailhog:
-    container_name: mailhog
+    container_name: mailhog_v21_0_5
     image: mailhog/mailhog
     restart: always
     logging:
