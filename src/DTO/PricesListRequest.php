@@ -6,7 +6,7 @@ use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator as AcmeAssert;
 
-class PricesListRequest
+class PricesListRequest implements DTOInterface, PricesListRequestInterface
 {
     #[Assert\NotBlank]
     #[AcmeAssert\IsValidSymbol]

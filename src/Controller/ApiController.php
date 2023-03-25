@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Exception\ApiException;
+use App\Exception\ValidationExceptionData;
 use App\Service\Symbol\SymbolsList;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,7 +28,11 @@ class ApiController extends AbstractController
         $violations = $validator->validate($pricesListDto);
 
         if (count($violations) > 0) {
-            return $this->json($violations, JsonResponse::HTTP_BAD_REQUEST);
+            throw new ApiException(new ValidationExceptionData(
+                JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+                ValidationExceptionData::ERROR_NAME,
+                $violations
+            ));
         }
 
         return $this->json(['name' => 'John Doe'], JsonResponse::HTTP_OK);
