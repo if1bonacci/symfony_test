@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Exception\ApiException;
 use App\Exception\ValidationExceptionData;
+use App\Service\HistoricalData\HistoricalDataInterface;
 use App\Service\Symbol\SymbolsList;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,7 +22,8 @@ class ApiController extends AbstractController
     public function pricesList(
         Request $request,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        HistoricalDataInterface $historicalData
     ): JsonResponse
     {
         $pricesListDto = $serializer->deserialize($request->getContent(), PricesListRequest::class, JsonEncoder::FORMAT);
@@ -34,8 +36,9 @@ class ApiController extends AbstractController
                 $violations
             ));
         }
+        $response = $historicalData->getHistoricalData(['symbol' => $pricesListDto->getSymbol()]);
 
-        return $this->json(['name' => 'John Doe'], JsonResponse::HTTP_OK);
+        return $this->json($response, JsonResponse::HTTP_OK);
     }
 
     #[Route('/list-of-symbols', methods: ['GET'])]

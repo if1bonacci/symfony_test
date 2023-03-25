@@ -1,0 +1,116 @@
+<?php
+
+namespace App\Tests\unit\Service;
+
+use App\DTO\Price;
+use App\Service\ExternalRequest\OptionInterface;
+use App\Service\ExternalRequest\RequestBuilderInterface;
+use App\Service\HistoricalData\HistoricalDataService;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+
+class HistoricalDataServiceTest extends TestCase
+{
+    const LIST_OF_PRICES = '{"prices":[{"date":1679407629,"open":101.9800033569336,"high":103.4800033569336,"low":101.86000061035156,"close":103.03500366210938,"volume":3665412,"adjclose":103.03500366210938},{"date":1679319000,"open":101.05999755859375,"high":102.58000183105469,"low":100.79000091552734,"close":101.93000030517578,"volume":26015800,"adjclose":101.93000030517578}]}';
+
+    const SYMBOL_TEST = 'test';
+    const RESPONSE = [
+        [
+            "date" => 1679405400,
+            "open" => 101.9800033569336,
+            "high" => 105.95999908447266,
+            "low" => 101.86000061035156,
+            "close" => 105.83999633789062,
+            "volume" => 33077400,
+        ],
+        [
+            "date" => 1679319000,
+            "open" => 101.05999755859375,
+            "high" => 102.58000183105469,
+            "low" => 100.79000091552734,
+            "close" => 101.93000030517578,
+            "volume" => 26033900,
+        ],
+    ];
+
+    const LINK_TO_RESOURCE = 'https://example.com';
+
+    public function testGetHistoricalData()
+    {
+        $mockHttpClient = $this->createMock(HttpClientInterface::class);
+
+        $containerBag = $this->createMock(ContainerBagInterface::class);
+        $containerBag
+            ->expects(self::once())
+            ->method('get')
+            ->with('app.historical_data_link')
+            ->willReturn(self::LINK_TO_RESOURCE);
+
+        $mockOptions = $this->createMock(OptionInterface::class);
+        $mockOptions
+            ->expects(self::once())
+            ->method('setQueryParams')
+            ->with(['symbol' => self::SYMBOL_TEST])
+            ->willReturn($mockOptions);
+
+        $mockRequestBuilder = $this->createMock(RequestBuilderInterface::class);
+        $mockRequestBuilder
+            ->expects(self::once())
+            ->method('setClient')
+            ->willReturn($mockRequestBuilder);
+        $mockRequestBuilder
+            ->expects(self::once())
+            ->method('setUrl')
+            ->willReturn($mockRequestBuilder);
+        $mockRequestBuilder
+            ->expects(self::once())
+            ->method('setMethod')
+            ->willReturn($mockRequestBuilder);
+        $mockRequestBuilder
+            ->expects(self::once())
+            ->method('setOptions')
+            ->with($mockOptions)
+            ->willReturn($mockRequestBuilder);
+        $mockRequestBuilder
+            ->expects(self::once())
+            ->method('send')
+            ->willReturn(self::LIST_OF_PRICES);
+
+        $mockPrice = $this->createMock(Price::class);
+        $mockPrice
+            ->expects(self::once())
+            ->method('getPrices')
+            ->willReturn(self::RESPONSE);
+
+        $mockSerializer = $this->createMock(SerializerInterface::class);
+        $mockSerializer
+            ->expects(self::once())
+            ->method('deserialize')
+            ->with(self::LIST_OF_PRICES, Price::class, 'json')
+            ->willReturn($mockPrice);
+
+        $mockValidation = $this->createMock(ValidatorInterface::class);
+        $mockValidatorConstrain = $this->createMock(ConstraintViolationListInterface::class);
+        $mockValidation
+            ->expects(self::once())
+            ->method('validate')
+            ->willReturn($mockValidatorConstrain);
+
+        $historicalDataService = new HistoricalDataService(
+            $mockHttpClient,
+            $containerBag,
+            $mockSerializer,
+            $mockRequestBuilder,
+            $mockOptions,
+            $mockValidation
+        );
+
+        $response = $historicalDataService->getHistoricalData(['symbol' => self::SYMBOL_TEST]);
+
+        $this->assertEquals(self::RESPONSE, $response);
+    }
+}

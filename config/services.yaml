@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
   app.symbols_list_link: "%env(symbols_list_link)%"
+  app.historical_data_link: "%env(historical_data_link)%"
   
 services:
   # default configuration for services in *this* file

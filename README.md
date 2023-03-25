@@ -25,7 +25,9 @@ Dev stack is a PHP/React dev environment based on Docker.
 cp .env.example .env
 ```
 
-4. Build docker containers
+4. Set valid ``x_rapid_api_key`` to `.env`  
+
+5. Build docker containers
 ```bash
 docker-compose build
 ```
@@ -34,14 +36,15 @@ You can use the Makefile to build :
 make build
 ```
 
-5. Start app
+6. Start app
 ```bash
 docker-compose up -d
 
 # same thing here you can use the Makefile
 make up
 ```
-6. Install vendors
+
+7. Install vendors
 ```bash
 docker exec -it php_v21_0_5 composer install
 ```
