@@ -4,16 +4,12 @@ namespace App\Service\HistoricalData;
 
 use App\DTO\Price;
 use App\DTO\PricesListRequestInterface;
-use App\Exception\ApiException;
-use App\Exception\ValidationExceptionData;
 use App\Service\ExternalRequest\OptionInterface;
 use App\Service\ExternalRequest\RequestBuilder;
 use App\Service\ExternalRequest\RequestBuilderInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class HistoricalDataService implements HistoricalDataInterface

@@ -18,6 +18,11 @@ class SendEmailNotification implements MessageInterface
         return $this;
     }
 
+    public function getSubject(): ?string
+    {
+        return $this->email->getSubject();
+    }
+
     public function addBody(PricesListRequestInterface $pricesListDto): MessageInterface
     {
         $body = sprintf(

@@ -4,7 +4,7 @@ namespace App\Tests\unit\Service;
 
 use App\Service\ExternalRequest\RequestBuilderInterface;
 use App\Service\Symbol\ExternalSymbolService;
-use App\Service\Symbol\SymbolsList;
+use App\Service\Symbol\SymbolInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
@@ -26,7 +26,7 @@ class ExternalSymbolServiceTest extends TestCase
     ];
 
     const LINK_TO_RESOURCE = 'https://example.com';
-    private SymbolsList $externalSymbolService;
+    private SymbolInterface $externalSymbolService;
 
     protected function setUp(): void
     {
@@ -69,6 +69,15 @@ class ExternalSymbolServiceTest extends TestCase
         $this->assertEquals($expectedStatus, $response);
     }
 
+    /**
+     * @dataProvider companyNameProvider
+     */
+    public function testFindCompanyName($expectedStatus, $symbol)
+    {
+        $response = $this->externalSymbolService->findCompanyBySymbol($symbol);
+        $this->assertEquals($expectedStatus, $response);
+    }
+
     public function symbolsProvider(): \Generator
     {
         yield 'exist' => [
@@ -85,6 +94,26 @@ class ExternalSymbolServiceTest extends TestCase
         ];
         yield 'not_exist' => [
             true,
+            'TEST4',
+        ];
+    }
+
+    public function companyNameProvider(): \Generator
+    {
+        yield 'exist' => [
+            'test1',
+            'TEST1',
+        ];
+        yield 'exist_2' => [
+            'test3',
+            'TEST3',
+        ];
+        yield 'exist_3' => [
+            'test2',
+            'TEST2',
+        ];
+        yield 'not_exist' => [
+            'TEST4',
             'TEST4',
         ];
     }

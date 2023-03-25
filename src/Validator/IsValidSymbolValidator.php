@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Service\Symbol\SymbolsList;
+use App\Service\Symbol\SymbolInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class IsValidSymbolValidator extends ConstraintValidator
 {
-    public function __construct(private SymbolsList $symbolService){}
+    public function __construct(private SymbolInterface $symbolService){}
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof IsValidSymbol) {

@@ -6,8 +6,11 @@ use App\Service\ExternalRequest\RequestBuilder;
 use App\Service\ExternalRequest\RequestBuilderInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
-class ExternalSymbolService implements SymbolsList
+class ExternalSymbolService implements SymbolInterface
 {
+    const REQUEST_FIELD = 'Symbol';
+    const RESPONSE_FIELD = 'Company Name';
+
     public function __construct(
         private readonly RequestBuilderInterface $requestBuilder,
         private readonly ContainerBagInterface   $params,
@@ -29,9 +32,24 @@ class ExternalSymbolService implements SymbolsList
     {
         $index = array_search(
             strtoupper($symbol),
-            array_column($this->getListOfSymbols(), 'Symbol')
+            array_column($this->getListOfSymbols(), self::REQUEST_FIELD)
         );
 
         return $index === false;
+    }
+
+    public function findCompanyBySymbol(string $symbol): string
+    {
+        $data = $this->getListOfSymbols();
+        $index = array_search(
+            strtoupper($symbol),
+            array_column($data, self::REQUEST_FIELD)
+        );
+
+        if ($index !== false) {
+            return $data[$index][self::RESPONSE_FIELD];
+        }
+
+        return $symbol;
     }
 }

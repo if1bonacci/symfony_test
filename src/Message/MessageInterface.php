@@ -13,4 +13,6 @@ interface MessageInterface
     public function addRecipient(string $recipient): self;
 
     public function getMessage(): mixed;
+
+    public function getSubject(): ?string;
 }

@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Service\PriceList\PriceListInterface;
-use App\Service\Symbol\SymbolsList;
+use App\Service\Symbol\SymbolInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,7 +21,7 @@ class ApiController
     }
 
     #[Route('/list-of-symbols', methods: ['GET'])]
-    public function listOfSymbols(SymbolsList $symbolsList): JsonResponse
+    public function listOfSymbols(SymbolInterface $symbolsList): JsonResponse
     {
         return new JsonResponse(
             $symbolsList->getListOfSymbols(),

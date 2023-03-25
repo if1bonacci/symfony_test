@@ -2,7 +2,7 @@
 
 namespace App\Tests\unit\Validator;
 
-use App\Service\Symbol\SymbolsList;
+use App\Service\Symbol\SymbolInterface;
 use App\Validator\IsValidSymbol;
 use App\Validator\IsValidSymbolValidator;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
@@ -12,7 +12,7 @@ class IsValidSymbolValidatorTest extends ConstraintValidatorTestCase
 {
     protected function createValidator(): ConstraintValidatorInterface
     {
-        $mockSymbolService = $this->createMock(SymbolsList::class);
+        $mockSymbolService = $this->createMock(SymbolInterface::class);
         $mockSymbolService
             ->method('findSymbol')
             ->willReturn(true);
