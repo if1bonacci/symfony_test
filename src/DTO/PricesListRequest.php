@@ -3,15 +3,27 @@
 namespace App\DTO;
 
 use DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator as AcmeAssert;
 
 class PricesListRequest
 {
+    #[Assert\NotBlank]
+    #[AcmeAssert\IsValidSymbol]
     protected string $symbol;
-
+    #[Assert\NotBlank]
+    #[Assert\DateTime]
+    #[Assert\LessThanOrEqual(propertyPath: 'endDate')]
+    #[Assert\LessThanOrEqual(value: 'today')]
+    #[AcmeAssert\IsValidDate]
     protected DateTime $startDate;
-
+    #[Assert\NotBlank]
+    #[Assert\DateTime]
+    #[AcmeAssert\IsValidDate]
+    #[Assert\GreaterThanOrEqual(propertyPath: 'startDate')]
+    #[Assert\LessThanOrEqual(value: 'today')]
     protected DateTime $endDate;
-
+    #[Assert\NotBlank]
     protected string $email;
 
     public function getSymbol(): string
@@ -21,7 +33,7 @@ class PricesListRequest
 
     public function setSymbol(string $symbol): self
     {
-        $this->symbol = $symbol;
+        $this->symbol = strtoupper($symbol);
 
         return $this;
     }
