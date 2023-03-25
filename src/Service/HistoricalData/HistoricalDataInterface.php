@@ -2,7 +2,9 @@
 
 namespace App\Service\HistoricalData;
 
+use App\DTO\PricesListRequestInterface;
+
 interface HistoricalDataInterface
 {
-    public function getHistoricalData(array $queryParams): array;
+    public function getHistoricalData(PricesListRequestInterface $dto): array;
 }

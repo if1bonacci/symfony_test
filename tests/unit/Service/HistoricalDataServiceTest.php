@@ -3,6 +3,7 @@
 namespace App\Tests\unit\Service;
 
 use App\DTO\Price;
+use App\DTO\PricesListRequestInterface;
 use App\Service\ExternalRequest\OptionInterface;
 use App\Service\ExternalRequest\RequestBuilderInterface;
 use App\Service\HistoricalData\HistoricalDataService;
@@ -109,7 +110,13 @@ class HistoricalDataServiceTest extends TestCase
             $mockValidation
         );
 
-        $response = $historicalDataService->getHistoricalData(['symbol' => self::SYMBOL_TEST]);
+        $mockPriceReqDto = $this->createMock(PricesListRequestInterface::class);
+        $mockPriceReqDto
+            ->expects(self::once())
+            ->method('getSymbol')
+            ->willReturn(self::SYMBOL_TEST);
+
+        $response = $historicalDataService->getHistoricalData($mockPriceReqDto);
 
         $this->assertEquals(self::RESPONSE, $response);
     }

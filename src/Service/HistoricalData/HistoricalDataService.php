@@ -3,6 +3,7 @@
 namespace App\Service\HistoricalData;
 
 use App\DTO\Price;
+use App\DTO\PricesListRequestInterface;
 use App\Exception\ApiException;
 use App\Exception\ValidationExceptionData;
 use App\Service\ExternalRequest\OptionInterface;
@@ -17,6 +18,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class HistoricalDataService implements HistoricalDataInterface
 {
+    const REQUEST_FIELD = 'symbol';
+
     public function __construct(
         private readonly HttpClientInterface     $historicalClient,
         private readonly ContainerBagInterface   $params,
@@ -28,13 +31,15 @@ class HistoricalDataService implements HistoricalDataInterface
     {
     }
 
-    public function getHistoricalData(array $queryParams): array
+    public function getHistoricalData(PricesListRequestInterface $dto): array
     {
         $response = $this->requestBuilder
             ->setClient($this->historicalClient)
             ->setMethod(RequestBuilder::REQUEST_GET)
             ->setUrl($this->params->get('app.historical_data_link'))
-            ->setOptions($this->option->setQueryParams($queryParams))
+            ->setOptions($this->option->setQueryParams([
+                self::REQUEST_FIELD => $dto->getSymbol()
+            ]))
             ->send();
 
         $priceDto = $this->dtoSerializer->deserialize($response, Price::class, JsonEncoder::FORMAT);
