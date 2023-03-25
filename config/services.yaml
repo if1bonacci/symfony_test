@@ -36,3 +36,4 @@ services:
     class: 'App\Service\Serializer\DTOSerializer'
 
   Symfony\Component\Serializer\SerializerInterface $dtoSerializer: '@app.dto.serializer'
+  Symfony\Component\Mime\Email: ~
