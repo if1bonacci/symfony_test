@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
+import 'react-datepicker/dist/react-datepicker.css';
 import axiosInstance from '../Services/ApiCallService';
-import { ThreeCircles } from  'react-loader-spinner';
+import {ThreeCircles} from 'react-loader-spinner';
 import HistoricalQuotes from './HistoricalQuotes'
 import HistoricalQuotesChart from './HistoricalQuotesChart';
 
-function MyForm() {
+function MyForm () {
   let initialState = {
     symbol: 'GOOG',
     email: 'asdas@sadf.re'
@@ -23,7 +23,7 @@ function MyForm() {
     const {name, value} = event
     setFormData((prev) => {
 
-      return {...prev, [name]: value}
+      return {...prev, [ name ]: value}
     })
   }
   const onChangeDate = (dates) => {
@@ -35,7 +35,7 @@ function MyForm() {
   useEffect(() => {
     getListOfSymbols();
   }, []);
-//--------------------------
+
   const validate = async function (formData) {
     let formDataErrors = [];
     let currentDate = new Date().getTime();
@@ -61,23 +61,37 @@ function MyForm() {
     }
 
     //startDate
-    if ( startDateV > currentDate || startDateV > endDateV) {
+    if (startDateV > currentDate || startDateV > endDateV) {
       formDataErrors.push('startDate should be less of equal than endDate and less or equal current date.')
     }
 
     //endDate
-    if ( endDateV > currentDate || startDateV > endDateV) {
+    if (endDateV > currentDate || startDateV > endDateV) {
       formDataErrors.push('endDate should be greater of equal than startDate and less or equal current date.')
     }
     //final
     await setFormErrors(formDataErrors);
   };
-//------------------------------
+
+  const popApiError = async (errorMessages) => {
+    const listApiErrors = [];
+
+    errorMessages.map((err) => {
+      if (!err.hasOwnProperty('propertyPath') || err[ 'propertyPath' ] === 'prices') {
+        return listApiErrors.push(err[ 'message' ]);
+      } else {
+        return listApiErrors.push(err[ 'message' ]);
+      }
+    })
+
+    await setFormErrors(listApiErrors);
+  }
+
   const getListOfSymbols = function () {
     axiosInstance.get('/list-of-symbols')
       .then((response) => {
         setCompanies(response.data)
-      }).catch((messages) =>{
+      }).catch((messages) => {
       console.error(messages)
     });
   }
@@ -88,28 +102,27 @@ function MyForm() {
     setResponse([]);
 
     let data = {
-      startDate: startDate.toISOString().split('T')[0],
-      endDate: endDate.toISOString().split('T')[0],
+      startDate: startDate.toISOString().split('T')[ 0 ],
+      endDate: endDate.toISOString().split('T')[ 0 ],
       symbol: formData.symbol,
       email: formData.email,
     }
     await validate(data);
-    console.log(formErrors)
-    if (!formErrors.length > 0) {
-      await axiosInstance.post('/prices-list',{
-        startDate: startDate.toISOString().split('T')[0],
-        endDate: endDate.toISOString().split('T')[0],
-        symbol: formData.symbol,
-        email: formData.email,
-      }). then((response) => {
+
+    await axiosInstance.post('/prices-list', data)
+      .then((response) => {
         setResponse(response.data)
-      }). catch(function (error) {
-        console.log(error)
+      }).catch(function (error) {
+        let er = error.response.data;
+        if (er.hasOwnProperty('violations')) {
+          console.log(error.response)
+          popApiError(er.violations);
+        } else {
+          setFormErrors([er.error])
+        }
       }).finally(() => {
         setLoaderStatus(false);
       })
-    }
-    setLoaderStatus(false);
   }
 
   return (
@@ -135,11 +148,12 @@ function MyForm() {
                 name="symbol"
                 value={formData.symbol}
                 onChange={(e) => onChangeHandler(e.target)}
-                style={{ display: "block" }}
+                style={{display: 'block'}}
               >
                 {companies.map(company => (
-                  (company.Symbol && <option key={company.Symbol} value={company.Symbol} label={company["Company Name"]}>{company["Company" +
-                  " Name"]}</option>)
+                  (company.Symbol && <option key={company.Symbol} value={company.Symbol}
+                                             label={company[ 'Company Name' ]}>{company[ 'Company' +
+                  ' Name' ]}</option>)
                 ))}
               </select>
             </div>
@@ -170,7 +184,7 @@ function MyForm() {
               />
             </div>
             <div>
-              { !loaderStatus &&(<button type="submit" className="btn btn-primary">Submit</button>)}
+              {!loaderStatus && (<button type="submit" className="btn btn-primary">Submit</button>)}
               <ThreeCircles
                 height="100"
                 width="100"
@@ -184,11 +198,11 @@ function MyForm() {
           </form>
         </div>
         <div className="col-9">
-            {response.length > 0 &&
-              <HistoricalQuotes
-                prices={response}
-              />
-            }
+          {response.length > 0 &&
+            <HistoricalQuotes
+              prices={response}
+            />
+          }
         </div>
       </div>
       <div className="row">
