@@ -114,8 +114,8 @@ function MyForm () {
     }
     await validate(data).then(async () => {
       await axiosInstance.post('/prices-list', {
-        startDate: data.startDate.toISOString().split('T')[ 0 ],
-        endDate: data.endDate.toISOString().split('T')[ 0 ],
+        startDate: data.startDate.toLocaleDateString(),
+        endDate: data.endDate.toLocaleDateString(),
         symbol: data.symbol,
         email: data.email,
       })
@@ -169,8 +169,7 @@ function MyForm () {
               >
                 {companies.map(company => (
                   (company.Symbol && <option key={company.Symbol} value={company.Symbol}
-                                             label={company[ 'Company Name' ]}>{company[ 'Company' +
-                  ' Name' ]}</option>)
+                     label={company[ 'Company Name' ]}>{company[ 'Company Name' ]}</option>)
                 ))}
               </select>
             </div>

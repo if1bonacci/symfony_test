@@ -25,9 +25,8 @@ class PriceListService implements PriceListInterface
         $result = [];
         $startDate = $pricesListDto->getStartDateInt();
         $endDate = $pricesListDto->getEndDateInt();
-
         foreach ($prices as $price) {
-            if ($startDate >= $price[self::REQUIRED_FIELD] && $price[self::REQUIRED_FIELD] <= $endDate) {
+            if ($startDate <= $price[self::REQUIRED_FIELD] && $price[self::REQUIRED_FIELD] <= $endDate) {
                 $result[] = $price;
             }
         }

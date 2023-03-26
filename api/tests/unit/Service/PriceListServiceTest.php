@@ -13,7 +13,7 @@ class PriceListServiceTest extends TestCase
 {
     const RESPONSE = [
         [
-            "date" => 1679534600,
+            "date" => 1679625999,
             "open" => 101.9800033569336,
             "high" => 105.95999908447266,
             "low" => 101.86000061035156,
@@ -44,11 +44,11 @@ class PriceListServiceTest extends TestCase
         $mockPriceReq
             ->expects(self::once())
             ->method('getStartDateInt')
-            ->willReturn(1679634600);
+            ->willReturn(1679615999);
         $mockPriceReq
             ->expects(self::once())
             ->method('getEndDateInt')
-            ->willReturn(1679664600);
+            ->willReturn(1679875199);
 
         $mockHistorical = $this->createMock(HistoricalDataInterface::class);
         $mockHistorical
