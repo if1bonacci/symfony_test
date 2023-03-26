@@ -92,7 +92,12 @@ function MyForm () {
       .then((response) => {
         setCompanies(response.data)
       }).catch((messages) => {
-      console.error(messages)
+        let er = messages.response.data;
+        if (er.hasOwnProperty('violations')) {
+          popApiError(er.violations);
+        } else {
+          setFormErrors([er.error])
+        }
     });
   }
 
