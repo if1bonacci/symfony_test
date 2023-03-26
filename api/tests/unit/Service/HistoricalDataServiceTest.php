@@ -42,13 +42,6 @@ class HistoricalDataServiceTest extends TestCase
     {
         $mockHttpClient = $this->createMock(HttpClientInterface::class);
 
-        $containerBag = $this->createMock(ContainerBagInterface::class);
-        $containerBag
-            ->expects(self::once())
-            ->method('get')
-            ->with('app.historical_data_link')
-            ->willReturn(self::LINK_TO_RESOURCE);
-
         $mockOptions = $this->createMock(OptionInterface::class);
         $mockOptions
             ->expects(self::once())
@@ -94,10 +87,10 @@ class HistoricalDataServiceTest extends TestCase
 
         $historicalDataService = new HistoricalDataService(
             $mockHttpClient,
-            $containerBag,
             $mockSerializer,
             $mockRequestBuilder,
             $mockOptions,
+            self::LINK_TO_RESOURCE
         );
 
         $mockPriceReqDto = $this->createMock(PricesListRequestInterface::class);

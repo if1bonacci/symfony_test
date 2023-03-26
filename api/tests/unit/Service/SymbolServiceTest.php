@@ -8,7 +8,7 @@ use App\Service\Symbol\SymbolInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
-class ExternalSymbolServiceTest extends TestCase
+class SymbolServiceTest extends TestCase
 {
     const LIST_OF_SYMBOLS = [
         [
@@ -30,12 +30,6 @@ class ExternalSymbolServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $containerBag = $this->createMock(ContainerBagInterface::class);
-        $containerBag
-            ->expects(self::once())
-            ->method('get')
-            ->with('app.symbols_list_link')
-            ->willReturn(self::LINK_TO_RESOURCE);
 
         $mockRequestBuilder = $this->createMock(RequestBuilderInterface::class);
         $mockRequestBuilder
@@ -51,7 +45,7 @@ class ExternalSymbolServiceTest extends TestCase
             ->method('send')
             ->willReturn(json_encode(self::LIST_OF_SYMBOLS, true));
 
-        $this->externalSymbolService = new SymbolService($mockRequestBuilder, $containerBag);
+        $this->externalSymbolService = new SymbolService($mockRequestBuilder, self::LINK_TO_RESOURCE);
     }
 
     public function testGetListOfSymbols()

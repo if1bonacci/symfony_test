@@ -88,7 +88,7 @@ function MyForm () {
   }
 
   const getListOfSymbols = function () {
-    axiosInstance.get('/list-of-symbols')
+    axiosInstance.get('/companies')
       .then((response) => {
         setCompanies(response.data)
       }).catch((messages) => {

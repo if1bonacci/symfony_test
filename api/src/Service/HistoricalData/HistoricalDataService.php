@@ -6,7 +6,6 @@ use App\DTO\Price;
 use App\DTO\PricesListRequestInterface;
 use App\Service\ExternalRequest\OptionInterface;
 use App\Service\ExternalRequest\RequestBuilderInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -18,20 +17,18 @@ class HistoricalDataService implements HistoricalDataInterface
 
     public function __construct(
         private readonly HttpClientInterface     $historicalClient,
-        private readonly ContainerBagInterface   $params,
         private readonly SerializerInterface     $dtoSerializer,
         private readonly RequestBuilderInterface $requestBuilder,
         private readonly OptionInterface         $option,
-    )
-    {
-    }
+        private readonly string                  $dataLink,
+    ) {}
 
     public function getHistoricalData(PricesListRequestInterface $dto): array
     {
         $response = $this->requestBuilder
             ->setClient($this->historicalClient)
             ->setMethod(Request::METHOD_GET)
-            ->setUrl($this->params->get('app.historical_data_link'))
+            ->setUrl($this->dataLink)
             ->setOptions($this->option->setQueryParams([
                 self::REQUEST_FIELD => $dto->getSymbol()
             ]))

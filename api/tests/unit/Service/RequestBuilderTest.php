@@ -5,6 +5,7 @@ namespace App\Tests\unit\Service;
 use App\Service\ExternalRequest\OptionInterface;
 use App\Service\ExternalRequest\RequestBuilder;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -40,14 +41,6 @@ class RequestBuilderTest extends TestCase
     private RequestBuilder $requestBuilder;
     protected function setUp(): void
     {
-        $mockValidator = $this->createMock(ValidatorInterface::class);
-        $mockValidatorConstrain = $this->createMock(ConstraintViolationListInterface::class);
-
-        $mockValidator
-            ->expects(self::once())
-            ->method('validate')
-            ->willReturn($mockValidatorConstrain);
-
         $mockHttpClient = $this->createMock(HttpClientInterface::class);
         $mockClientResponse = $this->createMock(ResponseInterface::class);
         $mockClientResponse
@@ -57,10 +50,11 @@ class RequestBuilderTest extends TestCase
         $mockHttpClient
             ->expects(self::once())
             ->method('request')
-            ->with(RequestBuilder::REQUEST_GET, self::TEST_URL, [])
+            ->with(Request::METHOD_GET, self::TEST_URL, [])
             ->willReturn($mockClientResponse);
 
-        $this->requestBuilder = new RequestBuilder($mockHttpClient, $mockValidator);
+        $this->requestBuilder = new RequestBuilder();
+        $this->requestBuilder->setClient($mockHttpClient);
     }
 
     public function testSendSuccess()
@@ -69,7 +63,7 @@ class RequestBuilderTest extends TestCase
         $result = $this->requestBuilder
             ->setUrl(self::TEST_URL)
             ->setOptions($mockOption)
-            ->setMethod(RequestBuilder::REQUEST_GET)
+            ->setMethod(Request::METHOD_GET)
             ->send();
 
         $this->assertEquals(self::TEST_DATA, $result);
@@ -79,7 +73,7 @@ class RequestBuilderTest extends TestCase
     {
         $result = $this->requestBuilder
             ->setUrl(self::TEST_URL)
-            ->setMethod(RequestBuilder::REQUEST_GET)
+            ->setMethod(Request::METHOD_GET)
             ->send();
 
         $this->assertEquals(self::TEST_DATA, $result);
