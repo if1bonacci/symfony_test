@@ -4,8 +4,8 @@ Dev stack is a PHP/React dev environment based on Docker.
 
 ## Requirements
 
-* [Docker](https://docs.docker.com/engine/install/)
-* [Docker Compose](https://docs.docker.com/compose/install/)
+* [Docker](https://docs.docker.com/engine/install/) version 20.10.23, build 7155243
+* [Docker Compose](https://docs.docker.com/compose/install/) version v2.15.1
 
 ## Docker Services
 
@@ -14,6 +14,8 @@ Dev stack is a PHP/React dev environment based on Docker.
 * Nginx 1.22.1
 * MailHog 1.14.7
 * RabbitMQ 3.11.11
+* React 18
+* Node 17
 
 ## Symfony components
 
@@ -27,6 +29,7 @@ Dev stack is a PHP/React dev environment based on Docker.
 * symfony/notifier
 * symfony/messenger
 * symfony/amqp-messenger
+* nelmio/cors-bundle
 
 ## Installation
 
@@ -77,12 +80,41 @@ make messenger
 9. Run tests
 ```bash
 docker exec -it php_v21_0_5 php bin/phpunit
-```
-
-### Stop
-```bash
-docker-compose down --remove-orphans
 
 # same thing here you can use the Makefile
-make down
+make test
+```
+
+## Testing
+
+1. test api http://localhost:8081 (the port can be modified in .env ${NGINX_PORT})
+
+```bash
+# List of prices
+
+curl --location 'localhost:8081/api/prices-list' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "symbol": "GOOG",
+    "startDate": "2023-03-25",
+    "endDate": "2023-03-25",
+    "email": "test@example.com"
+}'
+
+# List of symbols
+
+curl --location 'localhost:8081/api/list-of-symbols' \
+--header 'Content-Type: application/json' \
+--data ''
+```
+2. test front `http://localhost:3000` (the port can be modified in .env `${REACT_PORT}`)
+3. test email sandbox `http://localhost:8025` (the port can be modified in .env `${MAILER_SANDBOX_PORT}`)
+4. test rabbitMQ dashboard `http://localhost:15672` (the port can be modified in .env `${RABBITMQ_MANAGER_PORT}`)
+```bash
+
+```
+### Stop
+```yaml
+RABBITMQ_USER=guest 
+RABBITMQ_PASS=guest
 ```
