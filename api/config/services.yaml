@@ -36,4 +36,9 @@ services:
     class: 'App\Service\Serializer\DTOSerializer'
 
   Symfony\Component\Serializer\SerializerInterface $dtoSerializer: '@app.dto.serializer'
+  
+  App\Service\PriceList\PriceListInterface: '@App\Service\PriceList\PriceListService'
+  App\Service\PriceList\PriceListInterface $priceListByPeriod: '@App\Service\PriceList\PriceListByPeriod'
+  App\Service\PriceList\PriceListInterface $priceListNotify: '@App\Service\PriceList\PriceListNotification'
+  
   Symfony\Component\Mime\Email: ~

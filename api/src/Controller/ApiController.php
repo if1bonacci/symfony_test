@@ -12,10 +12,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiController
 {
     #[Route('/prices-list', methods: ['POST'])]
-    public function pricesList(Request $request, PriceListInterface $priceListService): JsonResponse
+    public function pricesList(Request $request, PriceListInterface $priceListNotify): JsonResponse
     {
         return new JsonResponse(
-            $priceListService->handleHistoricalData($request->getContent()),
+            $priceListNotify->handleHistoricalData($request->getContent()),
             JsonResponse::HTTP_OK
         );
     }
