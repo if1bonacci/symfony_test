@@ -8,6 +8,4 @@ interface PriceListInterface
 {
     public function handleHistoricalData(string $content): array;
 
-    public function getDto(): PricesListRequestInterface;
-
 }

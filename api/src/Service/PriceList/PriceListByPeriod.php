@@ -2,12 +2,9 @@
 
 namespace App\Service\PriceList;
 
-use App\DTO\PricesListRequestInterface;
-
-class PriceListByPeriod implements PriceListInterface
+class PriceListByPeriod extends PriceList
 {
     const REQUIRED_FIELD = 'date';
-    protected PricesListRequestInterface $pricesListDto;
 
     public function __construct(private readonly PriceListInterface $priceList)
     {
@@ -34,10 +31,5 @@ class PriceListByPeriod implements PriceListInterface
         }
 
         return $result;
-    }
-
-    public function getDto(): PricesListRequestInterface
-    {
-        return $this->pricesListDto;
     }
 }

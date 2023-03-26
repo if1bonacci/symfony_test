@@ -3,15 +3,12 @@
 namespace App\Service\PriceList;
 
 use App\DTO\PricesListRequest;
-use App\DTO\PricesListRequestInterface;
 use App\Service\HistoricalData\HistoricalDataInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class PriceListService implements PriceListInterface
+class PriceListService extends PriceList
 {
-    protected PricesListRequestInterface $pricesListDto;
-
     public function __construct(
         private readonly SerializerInterface     $dtoSerializer,
         private readonly HistoricalDataInterface $historicalData,
@@ -25,10 +22,5 @@ class PriceListService implements PriceListInterface
         $this->pricesListDto = $pricesListDto;
 
         return $this->historicalData->getHistoricalData($pricesListDto);
-    }
-
-    public function getDto(): PricesListRequestInterface
-    {
-        return $this->pricesListDto;
     }
 }

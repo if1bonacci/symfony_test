@@ -2,14 +2,11 @@
 
 namespace App\Service\PriceList;
 
-use App\DTO\PricesListRequestInterface;
 use App\Message\MessageInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class PriceListNotification implements PriceListInterface
+class PriceListNotification extends PriceList
 {
-    protected PricesListRequestInterface $pricesListDto;
-
     public function __construct(
         private readonly PriceListInterface  $priceListByPeriod,
         private readonly MessageBusInterface $messageBus,
@@ -31,10 +28,5 @@ class PriceListNotification implements PriceListInterface
         );
 
         return $prices;
-    }
-
-    public function getDto(): PricesListRequestInterface
-    {
-        return $this->pricesListDto;
     }
 }
