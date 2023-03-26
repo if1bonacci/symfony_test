@@ -43,15 +43,21 @@ cp .env.example .env
 cp api/.env.example api/.env
 cp ui/.env.example ui/.env
 ```
+check availability for ports
+
+[Symfony .env](https://github.com/if1bonacci/symfony_test/blob/master/api/.env.example)
+
+[React .env](https://github.com/if1bonacci/symfony_test/blob/master/ui/.env.example)
+
+[Docker .env](https://github.com/if1bonacci/symfony_test/blob/master/.env.example)
 
 4. Set valid ``x_rapid_api_key`` to `api/.env`  
 
 5. Build docker containers
 ```bash
 docker-compose build
-```
-You can use the Makefile to build :
-```bash
+
+#same thing here you can use the Makefile
 make build
 ```
 
@@ -89,7 +95,7 @@ make test
 
 ## Testing
 
-1. test api http://localhost:8081 (the port can be modified in .env ${NGINX_PORT})
+1. test api `http://localhost:8081` (the port can be modified in .env `${NGINX_PORT}`)
 
 ```bash
 # List of prices
@@ -110,13 +116,19 @@ curl --location 'localhost:8081/api/list-of-symbols' \
 --data ''
 ```
 2. test front `http://localhost:3000` (the port can be modified in .env `${REACT_PORT}`)
-3. test email sandbox `http://localhost:8025` (the port can be modified in .env `${MAILER_SANDBOX_PORT}`)
-4. test rabbitMQ dashboard `http://localhost:15672` (the port can be modified in .env `${RABBITMQ_MANAGER_PORT}`)
-```bash
 
-```
-### Stop
+3. test email sandbox `http://localhost:8025` (the port can be modified in .env `${MAILER_SANDBOX_PORT}`)
+
+4. test rabbitMQ dashboard `http://localhost:15672` (the port can be modified in .env `${RABBITMQ_MANAGER_PORT}`)
 ```yaml
 RABBITMQ_USER=guest 
 RABBITMQ_PASS=guest
+```
+
+### Stop
+```bash
+docker-compose down --remove-orphans
+
+# same thing here you can use the Makefile
+make down
 ```
