@@ -8,15 +8,13 @@ function App() {
 
   return (
     <div className="row align-items-center" id="my-container-test">
-      <div className="mx-auto col-10 col-md-8 col-lg-6">
-        <div className="App">
-          <Container>
-            <Row>
-              <h1> Test work </h1>
-              <MyForm />
-            </Row>
-          </Container>
-        </div>
+      <div className="App">
+        <Container>
+          <Row>
+            <h1> Test work </h1>
+            <MyForm />
+          </Row>
+        </Container>
       </div>
     </div>
   );

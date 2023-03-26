@@ -115,7 +115,11 @@ function MyForm () {
         email: data.email,
       })
         .then((response) => {
-          setResponse(response.data)
+          if (response.data.length > 0) {
+            setResponse(response.data)
+          } else {
+            setFormErrors(['Nothing to show for the period'])
+          }
         }).catch(function (error) {
           let er = error.response.data;
           if (er.hasOwnProperty('violations')) {
@@ -129,18 +133,18 @@ function MyForm () {
     }).finally(() => {
       setLoaderStatus(false);
     })
-
-
   }
 
   return (
     <>
       <div className="row">
-        <ul className="danger">
-          {formErrors && formErrors.map((error, key) => (
-            <li key={key}>{error}</li>
-          ))}
-        </ul>
+        {formErrors.length > 0 && (
+          <ul className="list-group" role="alert">
+            {formErrors.map((error, key) => (
+              <li className="list-group-item list-group-item-danger" key={key}>{error}</li>
+            ))}
+          </ul>
+        )}
       </div>
       <div className="row">
         <div className="col-4">
