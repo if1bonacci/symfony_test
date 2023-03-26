@@ -12,6 +12,8 @@ use Symfony\Component\HttpKernel\Attribute\Cache;
 #[Route('/api')]
 class ApiController
 {
+    const CACHING_TIME = 3600;
+
     #[Route('/prices-list', methods: ['POST'])]
     public function pricesList(Request $request, PriceListInterface $priceListNotify): JsonResponse
     {
@@ -22,7 +24,7 @@ class ApiController
     }
 
     #[Route('/list-of-symbols', methods: ['GET'])]
-    #[Cache(public: true, maxage: 3600, mustRevalidate: true)]
+    #[Cache(public: true, maxage: self::CACHING_TIME, mustRevalidate: true)]
     public function listOfSymbols(SymbolInterface $symbolsList): JsonResponse
     {
         return new JsonResponse(
