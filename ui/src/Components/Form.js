@@ -71,17 +71,17 @@ function MyForm () {
     }
     //final
     await setFormErrors(formDataErrors);
+
+    if (formDataErrors.length > 0) {
+      throw new Error('invalid form');
+    }
   };
 
   const popApiError = async (errorMessages) => {
     const listApiErrors = [];
 
     errorMessages.map((err) => {
-      if (!err.hasOwnProperty('propertyPath') || err[ 'propertyPath' ] === 'prices') {
-        return listApiErrors.push(err[ 'message' ]);
-      } else {
-        return listApiErrors.push(err[ 'message' ]);
-      }
+      return listApiErrors.push(`${err[ 'propertyPath' ]}:  ${err[ 'message' ]}`);
     })
 
     await setFormErrors(listApiErrors);
@@ -102,27 +102,35 @@ function MyForm () {
     setResponse([]);
 
     let data = {
-      startDate: startDate.toISOString().split('T')[ 0 ],
-      endDate: endDate.toISOString().split('T')[ 0 ],
+      startDate: startDate,
+      endDate: endDate,
       symbol: formData.symbol,
       email: formData.email,
     }
-    await validate(data);
-
-    await axiosInstance.post('/prices-list', data)
-      .then((response) => {
-        setResponse(response.data)
-      }).catch(function (error) {
-        let er = error.response.data;
-        if (er.hasOwnProperty('violations')) {
-          console.log(error.response)
-          popApiError(er.violations);
-        } else {
-          setFormErrors([er.error])
-        }
-      }).finally(() => {
-        setLoaderStatus(false);
+    await validate(data).then(async () => {
+      await axiosInstance.post('/prices-list', {
+        startDate: data.startDate.toISOString().split('T')[ 0 ],
+        endDate: data.endDate.toISOString().split('T')[ 0 ],
+        symbol: data.symbol,
+        email: data.email,
       })
+        .then((response) => {
+          setResponse(response.data)
+        }).catch(function (error) {
+          let er = error.response.data;
+          if (er.hasOwnProperty('violations')) {
+            popApiError(er.violations);
+          } else {
+            setFormErrors([er.error])
+          }
+        })
+    }).catch((exp) => {
+      console.log('error')
+    }).finally(() => {
+      setLoaderStatus(false);
+    })
+
+
   }
 
   return (
@@ -135,7 +143,7 @@ function MyForm () {
         </ul>
       </div>
       <div className="row">
-        <div className="col-3">
+        <div className="col-4">
           <form
             onSubmit={handleSubmit}
             noValidate
@@ -197,7 +205,7 @@ function MyForm () {
             </div>
           </form>
         </div>
-        <div className="col-9">
+        <div className="col-8">
           {response.length > 0 &&
             <HistoricalQuotes
               prices={response}
