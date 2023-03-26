@@ -9,7 +9,7 @@ import HistoricalQuotesChart from './HistoricalQuotesChart';
 function MyForm () {
   let initialState = {
     symbol: 'GOOG',
-    email: 'asdas@sadf.re'
+    email: 'example@test.com'
   }
   const [formData, setFormData] = useState(initialState)
   const [startDate, setStartDate] = useState(new Date());
