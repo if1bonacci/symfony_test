@@ -31,6 +31,12 @@ Dev stack is a PHP/React dev environment based on Docker.
 * symfony/amqp-messenger
 * nelmio/cors-bundle
 
+## Structure
+
+* `api` - symfony backend
+* `ui` - react frontend
+* `docker` - docker components
+
 ## Installation
 
 1. Cloning repo
@@ -111,13 +117,23 @@ curl --location 'localhost:8081/api/prices-list' \
 
 # List of symbols
 
-curl --location 'localhost:8081/api/list-of-symbols' \
+curl --location 'localhost:8081/api/companies' \
 --header 'Content-Type: application/json' \
 --data ''
 ```
 2. test front `http://localhost:3000` (the port can be modified in .env `${REACT_PORT}`)
 
+after update don't forgot to actualize `.env` in `ui` dir 
+
 3. test email sandbox `http://localhost:8025` (the port can be modified in .env `${MAILER_SANDBOX_PORT}`)
+
+before testing don't forgot to run consumer
+```bash
+docker exec -it php_v21_0_5 php bin/console messenger:consume amqp_email_notification -vv
+
+# same thing here you can use the Makefile
+make messenger
+```
 
 4. test rabbitMQ dashboard `http://localhost:15672` (the port can be modified in .env `${RABBITMQ_MANAGER_PORT}`)
 ```yaml
@@ -132,3 +148,13 @@ docker-compose down --remove-orphans
 # same thing here you can use the Makefile
 make down
 ```
+
+## Nice to do (not done)
+
+* would be great to add caching for requests to speed up the response process
+* split "SymbolService" - change to decorator
+* add the bigger amount of tests. Cover not only happy path
+* add functional tests
+* add  tests to "React"
+* update error listener and make better error information
+* add logger 
