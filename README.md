@@ -15,7 +15,7 @@ Dev stack is a PHP/React dev environment based on Docker.
 * MailHog 1.14.7
 * RabbitMQ 3.11.11
 * React 18
-* Node 17
+* Node 16
 
 ## Symfony components
 
@@ -40,9 +40,11 @@ Dev stack is a PHP/React dev environment based on Docker.
 3. Create `.env`
 ```bash
 cp .env.example .env
+cp api/.env.example api/.env
+cp ui/.env.example ui/.env
 ```
 
-4. Set valid ``x_rapid_api_key`` to `.env`  
+4. Set valid ``x_rapid_api_key`` to `api/.env`  
 
 5. Build docker containers
 ```bash
