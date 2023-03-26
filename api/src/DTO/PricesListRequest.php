@@ -8,17 +8,22 @@ use App\Validator as AcmeAssert;
 
 class PricesListRequest implements DTOInterface, PricesListRequestInterface
 {
+    private const END_OF_DAY = 86399;
+
     #[Assert\NotBlank]
     #[AcmeAssert\IsValidSymbol]
     protected string $symbol;
+
     #[Assert\NotBlank]
     #[Assert\LessThanOrEqual(propertyPath: 'endDate')]
     #[Assert\LessThanOrEqual(value: 'today')]
     protected DateTime $startDate;
+
     #[Assert\NotBlank]
     #[Assert\GreaterThanOrEqual(propertyPath: 'startDate')]
     #[Assert\LessThanOrEqual(value: 'today')]
     protected DateTime $endDate;
+
     #[Assert\NotBlank]
     protected string $email;
 
@@ -49,6 +54,16 @@ class PricesListRequest implements DTOInterface, PricesListRequestInterface
     public function getEndDate(): DateTime
     {
         return $this->endDate;
+    }
+
+    public function getStartDateInt(): int
+    {
+        return strtotime($this->startDate->format(DATE_ATOM)) + self::END_OF_DAY;
+    }
+
+    public function getEndDateInt(): int
+    {
+        return strtotime($this->endDate->format(DATE_ATOM)) + self::END_OF_DAY;
     }
 
     public function setEndDate(DateTime $endDate): self

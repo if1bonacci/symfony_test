@@ -4,6 +4,9 @@ namespace App\Service\ExternalRequest;
 
 class Options implements OptionInterface
 {
+    private const QUERY = 'query';
+    private const HEADERS = 'headers';
+
     private ?array $headers = [];
     private ?array $query = [];
 
@@ -34,8 +37,8 @@ class Options implements OptionInterface
     public function getData(): array
     {
         return [
-            'query' => $this->getQueryParams(),
-            'headers' => $this->getHeaders()
+            self::QUERY => $this->getQueryParams(),
+            self::HEADERS => $this->getHeaders()
         ];
     }
 }

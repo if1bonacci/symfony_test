@@ -34,11 +34,14 @@ services:
   
   app.dto.serializer:
     class: 'App\Service\Serializer\DTOSerializer'
+    
+  App\Service\ExternalRequest\RequestBuilder:
+    calls:
+      - setClient: [ '@http_client' ]
 
   Symfony\Component\Serializer\SerializerInterface $dtoSerializer: '@app.dto.serializer'
   
   App\Service\PriceList\PriceListInterface: '@App\Service\PriceList\PriceListService'
-  App\Service\PriceList\PriceListInterface $priceListByPeriod: '@App\Service\PriceList\PriceListByPeriod'
   App\Service\PriceList\PriceListInterface $priceListNotify: '@App\Service\PriceList\PriceListNotification'
   
   Symfony\Component\Mime\Email: ~

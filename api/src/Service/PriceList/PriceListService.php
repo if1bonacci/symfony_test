@@ -2,25 +2,38 @@
 
 namespace App\Service\PriceList;
 
-use App\DTO\PricesListRequest;
+use App\DTO\PricesListRequestInterface;
 use App\Service\HistoricalData\HistoricalDataInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\SerializerInterface;
 
-class PriceListService extends PriceList
+
+class PriceListService implements PriceListInterface
 {
+    const REQUIRED_FIELD = 'date';
+
     public function __construct(
-        private readonly SerializerInterface     $dtoSerializer,
         private readonly HistoricalDataInterface $historicalData,
-    )
-    {
+    ) {
     }
 
-    public function handleHistoricalData(string $content): array
+    public function handleHistoricalData(PricesListRequestInterface $pricesListDto): array
     {
-        $pricesListDto = $this->dtoSerializer->deserialize($content, PricesListRequest::class, JsonEncoder::FORMAT);
-        $this->pricesListDto = $pricesListDto;
+        $prices = $this->historicalData->getHistoricalData($pricesListDto);
 
-        return $this->historicalData->getHistoricalData($pricesListDto);
+        return $this->checkPeriods($prices, $pricesListDto);
+    }
+
+    private function checkPeriods(array $prices, PricesListRequestInterface $pricesListDto): array
+    {
+        $result = [];
+        $startDate = $pricesListDto->getStartDateInt();
+        $endDate = $pricesListDto->getEndDateInt();
+
+        foreach ($prices as $price) {
+            if ($startDate >= $price[self::REQUIRED_FIELD] && $price[self::REQUIRED_FIELD] <= $endDate) {
+                $result[] = $price;
+            }
+        }
+
+        return $result;
     }
 }

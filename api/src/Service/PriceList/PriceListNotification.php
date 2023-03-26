@@ -2,29 +2,29 @@
 
 namespace App\Service\PriceList;
 
+use App\DTO\PricesListRequestInterface;
 use App\Message\MessageInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class PriceListNotification extends PriceList
+class PriceListNotification implements PriceListInterface
 {
     public function __construct(
-        private readonly PriceListInterface  $priceListByPeriod,
+        private readonly PriceListInterface  $priceList,
         private readonly MessageBusInterface $messageBus,
         private readonly MessageInterface    $emailMessage,
     )
     {
     }
 
-    public function handleHistoricalData(string $content): array
+    public function handleHistoricalData(PricesListRequestInterface $pricesListDto): array
     {
-        $prices = $this->priceListByPeriod->handleHistoricalData($content);
-        $this->pricesListDto = $this->priceListByPeriod->getDto();
+        $prices = $this->priceList->handleHistoricalData($pricesListDto);
 
         $this->messageBus->dispatch(
             $this->emailMessage
-                ->addRecipient($this->pricesListDto->getEmail())
-                ->addSubject($this->pricesListDto->getSymbol())
-                ->addBody($this->pricesListDto)
+                ->addRecipient($pricesListDto->getEmail())
+                ->addSubject($pricesListDto->getSymbol())
+                ->addBody($pricesListDto)
         );
 
         return $prices;

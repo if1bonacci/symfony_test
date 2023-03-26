@@ -2,11 +2,11 @@
 
 namespace App\Service\Symbol;
 
-use App\Service\ExternalRequest\RequestBuilder;
 use App\Service\ExternalRequest\RequestBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
-class ExternalSymbolService implements SymbolInterface
+class SymbolService implements SymbolInterface
 {
     const REQUEST_FIELD = 'Symbol';
     const RESPONSE_FIELD = 'Company Name';
@@ -21,7 +21,7 @@ class ExternalSymbolService implements SymbolInterface
     public function getListOfSymbols(): array
     {
         $response = $this->requestBuilder
-            ->setMethod(RequestBuilder::REQUEST_GET)
+            ->setMethod(Request::METHOD_GET)
             ->setUrl($this->params->get('app.symbols_list_link'))
             ->send();
 

@@ -6,6 +6,6 @@ use App\DTO\PricesListRequestInterface;
 
 interface PriceListInterface
 {
-    public function handleHistoricalData(string $content): array;
+    public function handleHistoricalData(PricesListRequestInterface $pricesListDto): array;
 
 }

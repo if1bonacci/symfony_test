@@ -3,7 +3,7 @@
 namespace App\Tests\unit\Service;
 
 use App\Service\ExternalRequest\RequestBuilderInterface;
-use App\Service\Symbol\ExternalSymbolService;
+use App\Service\Symbol\SymbolService;
 use App\Service\Symbol\SymbolInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -51,7 +51,7 @@ class ExternalSymbolServiceTest extends TestCase
             ->method('send')
             ->willReturn(json_encode(self::LIST_OF_SYMBOLS, true));
 
-        $this->externalSymbolService = new ExternalSymbolService($mockRequestBuilder, $containerBag);
+        $this->externalSymbolService = new SymbolService($mockRequestBuilder, $containerBag);
     }
 
     public function testGetListOfSymbols()
