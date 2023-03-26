@@ -33,7 +33,7 @@ services:
   app.dto.serializer:
     class: 'App\Service\Serializer\DTOSerializer'
     
-  App\Service\ExternalRequest\RequestBuilder:
+  App\Service\ExternalRequest\Sender:
     calls:
       - setClient: [ '@http_client' ]
       

@@ -10,16 +10,7 @@ class RequestBuilder implements RequestBuilderInterface
 
     private string $url;
 
-    private HttpClientInterface $client;
-
     private ?OptionInterface $options = null;
-
-    public function setClient(HttpClientInterface $client): self
-    {
-        $this->client = $client;
-
-        return $this;
-    }
 
     public function setMethod(string $method): self
     {
@@ -55,21 +46,5 @@ class RequestBuilder implements RequestBuilderInterface
     public function getOptions(): ?OptionInterface
     {
         return $this->options;
-    }
-
-    public function getClient(): HttpClientInterface
-    {
-        return $this->client;
-    }
-
-    public function send(): string
-    {
-        $options = $this->getOptions() ? $this->getOptions()->getData() : [];
-
-        return $this->getClient()->request(
-            $this->getMethod(),
-            $this->getUrl(),
-            $options
-        )->getContent();
     }
 }

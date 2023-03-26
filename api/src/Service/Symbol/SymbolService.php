@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Symbol;
 
 use App\Service\ExternalRequest\RequestBuilderInterface;
+use App\Service\ExternalRequest\SenderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class SymbolService implements SymbolInterface
@@ -15,15 +16,16 @@ class SymbolService implements SymbolInterface
 
     public function __construct(
         private readonly RequestBuilderInterface $requestBuilder,
+        private readonly SenderInterface $sender,
         private readonly string $dataLink,
     ) {}
 
     public function getListOfSymbols(): array
     {
-        $response = $this->requestBuilder
+        $request = $this->requestBuilder
             ->setMethod(Request::METHOD_GET)
-            ->setUrl($this->dataLink)
-            ->send();
+            ->setUrl($this->dataLink);
+        $response = $this->sender->send($request);
 
         return \json_decode($response, true);
     }

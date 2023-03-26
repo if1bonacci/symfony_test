@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\unit\Service;
 
 use App\Service\ExternalRequest\RequestBuilderInterface;
+use App\Service\ExternalRequest\SenderInterface;
 use App\Service\Symbol\SymbolService;
 use App\Service\Symbol\SymbolInterface;
 use PHPUnit\Framework\TestCase;
@@ -42,12 +43,16 @@ class SymbolServiceTest extends TestCase
             ->expects(self::once())
             ->method('setMethod')
             ->willReturn($mockRequestBuilder);
-        $mockRequestBuilder
+
+        $mockSender = $this->createMock(SenderInterface::class);
+
+        $mockSender
             ->expects(self::once())
             ->method('send')
+            ->with($mockRequestBuilder)
             ->willReturn(\json_encode(self::LIST_OF_SYMBOLS));
 
-        $this->externalSymbolService = new SymbolService($mockRequestBuilder, self::LINK_TO_RESOURCE);
+        $this->externalSymbolService = new SymbolService($mockRequestBuilder, $mockSender, self::LINK_TO_RESOURCE);
     }
 
     public function testGetListOfSymbols()

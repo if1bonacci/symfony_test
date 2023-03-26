@@ -8,6 +8,7 @@ use App\DTO\Price;
 use App\DTO\PricesListRequestInterface;
 use App\Service\ExternalRequest\OptionInterface;
 use App\Service\ExternalRequest\RequestBuilderInterface;
+use App\Service\ExternalRequest\SenderInterface;
 use App\Service\HistoricalData\HistoricalDataService;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -54,10 +55,6 @@ class HistoricalDataServiceTest extends TestCase
         $mockRequestBuilder = $this->createMock(RequestBuilderInterface::class);
         $mockRequestBuilder
             ->expects(self::once())
-            ->method('setClient')
-            ->willReturn($mockRequestBuilder);
-        $mockRequestBuilder
-            ->expects(self::once())
             ->method('setUrl')
             ->willReturn($mockRequestBuilder);
         $mockRequestBuilder
@@ -69,9 +66,17 @@ class HistoricalDataServiceTest extends TestCase
             ->method('setOptions')
             ->with($mockOptions)
             ->willReturn($mockRequestBuilder);
-        $mockRequestBuilder
+
+        $mockSender = $this->createMock(SenderInterface::class);
+        $mockSender
+            ->expects(self::once())
+            ->method('setClient')
+            ->willReturn($mockSender);
+
+        $mockSender
             ->expects(self::once())
             ->method('send')
+            ->with($mockRequestBuilder)
             ->willReturn(self::LIST_OF_PRICES);
 
         $mockPrice = $this->createMock(Price::class);
@@ -92,6 +97,7 @@ class HistoricalDataServiceTest extends TestCase
             $mockSerializer,
             $mockRequestBuilder,
             $mockOptions,
+            $mockSender,
             self::LINK_TO_RESOURCE
         );
 

@@ -6,12 +6,15 @@ namespace App\Tests\unit\Service;
 
 use App\Service\ExternalRequest\OptionInterface;
 use App\Service\ExternalRequest\RequestBuilder;
+use App\Service\ExternalRequest\RequestBuilderInterface;
+use App\Service\ExternalRequest\Sender;
+use App\Service\ExternalRequest\SenderInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
-class RequestBuilderTest extends TestCase
+class SenderTest extends TestCase
 {
     const TEST_URL = 'http://example.com/get/super/data';
 
@@ -38,7 +41,12 @@ class RequestBuilderTest extends TestCase
     ]
     ';
 
-    private RequestBuilder $requestBuilder;
+    private SenderInterface $sender;
+
+    private OptionInterface $mockOption;
+
+    private RequestBuilderInterface $mockRequestBuilder;
+
     protected function setUp(): void
     {
         $mockHttpClient = $this->createMock(HttpClientInterface::class);
@@ -52,29 +60,33 @@ class RequestBuilderTest extends TestCase
             ->method('request')
             ->with(Request::METHOD_GET, self::TEST_URL, [])
             ->willReturn($mockClientResponse);
+        $this->mockOption = $this->createMock(OptionInterface::class);
+        $this->mockOption
+            ->expects(self::once())
+            ->method('getData')
+            ->willReturn([]);
 
-        $this->requestBuilder = new RequestBuilder();
-        $this->requestBuilder->setClient($mockHttpClient);
+        $this->mockRequestBuilder = $this->createMock(RequestBuilderInterface::class);
+        $this->mockRequestBuilder
+            ->expects(self::once())
+            ->method('getMethod')
+            ->willReturn(Request::METHOD_GET);
+        $this->mockRequestBuilder
+            ->expects(self::once())
+            ->method('getUrl')
+            ->willReturn(self::TEST_URL);
+        $this->mockRequestBuilder
+            ->expects(self::exactly(2))
+            ->method('getOptions')
+            ->willReturn($this->mockOption);
+
+        $this->sender = new Sender();
+        $this->sender->setClient($mockHttpClient);
     }
 
     public function testSendSuccess()
     {
-        $mockOption = $this->createMock(OptionInterface::class);
-        $result = $this->requestBuilder
-            ->setUrl(self::TEST_URL)
-            ->setOptions($mockOption)
-            ->setMethod(Request::METHOD_GET)
-            ->send();
-
-        $this->assertEquals(self::TEST_DATA, $result);
-    }
-
-    public function testSendSuccessWithEmptyOption()
-    {
-        $result = $this->requestBuilder
-            ->setUrl(self::TEST_URL)
-            ->setMethod(Request::METHOD_GET)
-            ->send();
+        $result = $this->sender->send($this->mockRequestBuilder);
 
         $this->assertEquals(self::TEST_DATA, $result);
     }
