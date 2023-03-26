@@ -10,13 +10,12 @@ use App\Message\MessageInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Mime\Email;
+use DateTime;
 
 class EmailMessageTest extends TestCase
 {
-    private const EMAIL = 'test_case@test.com';
-    private const SUBJECT = 'test_subject';
-
     private MockObject $email;
+
     private MessageInterface $message;
 
     protected function setUp(): void
@@ -27,7 +26,7 @@ class EmailMessageTest extends TestCase
 
     public function testAddSubject(): void
     {
-        $result = $this->message->addSubject(self::SUBJECT);
+        $result = $this->message->addSubject('test_subject');
         $this->assertInstanceOf(SendEmailNotification::class, $result);
     }
 
@@ -37,11 +36,11 @@ class EmailMessageTest extends TestCase
         $mockHistoryReq
             ->expects(self::once())
             ->method('getStartDate')
-            ->willReturn(new \DateTime());
+            ->willReturn(new DateTime());
         $mockHistoryReq
             ->expects(self::once())
             ->method('getEndDate')
-            ->willReturn(new \DateTime());
+            ->willReturn(new DateTime());
 
         $result = $this->message->addBody($mockHistoryReq);
         $this->assertInstanceOf(SendEmailNotification::class, $result);
@@ -49,7 +48,7 @@ class EmailMessageTest extends TestCase
 
     public function testAddRecipient(): void
     {
-        $result = $this->message->addRecipient(self::EMAIL);
+        $result = $this->message->addRecipient('test_case@test.com');
         $this->assertInstanceOf(SendEmailNotification::class, $result);
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\unit\DTO;
 
 use PHPUnit\Framework\TestCase;
@@ -9,6 +11,7 @@ use App\DTO\PricesListRequest;
 class PricesListRequestTest extends TestCase
 {
     const EMAIL = 'test@example.com';
+
     const SYMBOL = 'TEST1';
 
     private PricesListRequest $pricesListRequest;

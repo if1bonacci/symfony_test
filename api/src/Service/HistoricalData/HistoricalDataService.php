@@ -13,7 +13,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class HistoricalDataService implements HistoricalDataInterface
 {
-    const REQUEST_FIELD = 'symbol';
+    private const REQUEST_FIELD = 'symbol';
 
     public function __construct(
         private readonly HttpClientInterface     $historicalClient,

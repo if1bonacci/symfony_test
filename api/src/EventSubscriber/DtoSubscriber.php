@@ -12,9 +12,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class DtoSubscriber implements EventSubscriberInterface
 {
     public const NAME = 'validateDto';
-    public function __construct(private ValidatorInterface $validator)
-    {
-    }
+
+    public function __construct(
+        private readonly ValidatorInterface $validator
+    ) {}
 
     public static function getSubscribedEvents(): array
     {

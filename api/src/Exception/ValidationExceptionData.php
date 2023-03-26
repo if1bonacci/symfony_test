@@ -7,6 +7,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 class ValidationExceptionData extends ApiExceptionData
 {
     const ERROR_NAME = 'ConstraintViolationList';
+
     private ConstraintViolationList $violations;
 
     public function __construct(int $statusCode, string $type, ConstraintViolationList $violations)

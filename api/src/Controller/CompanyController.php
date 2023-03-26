@@ -13,7 +13,7 @@ final class CompanyController extends ApiController
     private const CACHING_TIME = 3600;
 
     #[Route('/companies', methods: ['GET'])]
-//    #[Cache(maxage: self::CACHING_TIME, public: true, mustRevalidate: true)]
+    #[Cache(maxage: self::CACHING_TIME, public: true, mustRevalidate: true)]
     public function companies(SymbolInterface $symbolsList): JsonResponse
     {
         $companies = $symbolsList->getListOfSymbols();

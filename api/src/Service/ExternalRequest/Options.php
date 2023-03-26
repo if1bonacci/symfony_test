@@ -5,9 +5,11 @@ namespace App\Service\ExternalRequest;
 class Options implements OptionInterface
 {
     private const QUERY = 'query';
+
     private const HEADERS = 'headers';
 
     private ?array $headers = [];
+
     private ?array $query = [];
 
     public function setHeaders(?array $headers): self

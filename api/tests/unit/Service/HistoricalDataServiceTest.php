@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\unit\Service;
 
 use App\DTO\Price;
@@ -8,7 +10,6 @@ use App\Service\ExternalRequest\OptionInterface;
 use App\Service\ExternalRequest\RequestBuilderInterface;
 use App\Service\HistoricalData\HistoricalDataService;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -17,6 +18,7 @@ class HistoricalDataServiceTest extends TestCase
     const LIST_OF_PRICES = '{"prices":[{"date":1679407629,"open":101.9800033569336,"high":103.4800033569336,"low":101.86000061035156,"close":103.03500366210938,"volume":3665412,"adjclose":103.03500366210938},{"date":1679319000,"open":101.05999755859375,"high":102.58000183105469,"low":100.79000091552734,"close":101.93000030517578,"volume":26015800,"adjclose":101.93000030517578}]}';
 
     const SYMBOL_TEST = 'test';
+
     const RESPONSE = [
         [
             "date" => 1679405400,

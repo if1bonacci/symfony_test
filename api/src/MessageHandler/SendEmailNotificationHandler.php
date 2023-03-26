@@ -9,9 +9,9 @@ use App\Message\MessageInterface;
 #[AsMessageHandler]
 class SendEmailNotificationHandler
 {
-    public function __construct(private readonly NotificationInterface $notification)
-    {
-    }
+    public function __construct(
+        private readonly NotificationInterface $notification
+    ) {}
 
     public function __invoke(MessageInterface $message): void
     {

@@ -5,15 +5,13 @@ namespace App\Service\PriceList;
 use App\DTO\PricesListRequestInterface;
 use App\Service\HistoricalData\HistoricalDataInterface;
 
-
 class PriceListService implements PriceListInterface
 {
-    const REQUIRED_FIELD = 'date';
+    private const REQUIRED_FIELD = 'date';
 
     public function __construct(
         private readonly HistoricalDataInterface $historicalData,
-    ) {
-    }
+    ) {}
 
     public function handleHistoricalData(PricesListRequestInterface $pricesListDto): array
     {

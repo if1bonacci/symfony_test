@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\Symbol;
 
 use App\Service\ExternalRequest\RequestBuilderInterface;
@@ -8,12 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 class SymbolService implements SymbolInterface
 {
     private const REQUEST_FIELD = 'Symbol';
-    const RESPONSE_FIELD = 'Company Name';
+
+    private const RESPONSE_FIELD = 'Company Name';
 
     public function __construct(
         private readonly RequestBuilderInterface $requestBuilder,
         private readonly string $dataLink,
-    ){}
+    ) {}
 
     public function getListOfSymbols(): array
     {

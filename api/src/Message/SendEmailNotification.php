@@ -8,8 +8,12 @@ use Symfony\Component\Mime\Email;
 class SendEmailNotification implements MessageInterface
 {
     const MESSAGE_BODY = 'From %s to %s';
+
     const DATE_FORMAT = 'Y-m-d';
-    public function __construct(private readonly Email $email){}
+
+    public function __construct(
+        private readonly Email $email
+    ) {}
 
     public function addSubject(string $subject): MessageInterface
     {

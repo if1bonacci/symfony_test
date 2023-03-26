@@ -1,18 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\unit\Service;
 
 use App\DTO\PricesListRequestInterface;
 use App\Service\HistoricalData\HistoricalDataInterface;
 use App\Service\PriceList\PriceListService;
 use PHPUnit\Framework\TestCase;
-use DateTime;
 
 class PriceListServiceTest extends TestCase
 {
     const RESPONSE = [
         [
-            //2023-03-23
             "date" => 1679534600,
             "open" => 101.9800033569336,
             "high" => 105.95999908447266,
@@ -21,7 +21,6 @@ class PriceListServiceTest extends TestCase
             "volume" => 33077400,
         ],
         [
-            //2013-12-31
             "date" => 1388516401,
             "open" => 101.05999755859375,
             "high" => 102.58000183105469,
@@ -30,7 +29,6 @@ class PriceListServiceTest extends TestCase
             "volume" => 26033900,
         ],
         [
-            //2023-03-24
             "date" => 1679664600,
             "open" => 101.05999755859375,
             "high" => 102.58000183105469,

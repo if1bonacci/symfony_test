@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\unit\Service;
 
 use App\Service\ExternalRequest\RequestBuilderInterface;
@@ -26,11 +28,11 @@ class SymbolServiceTest extends TestCase
     ];
 
     const LINK_TO_RESOURCE = 'https://example.com';
+
     private SymbolInterface $externalSymbolService;
 
     protected function setUp(): void
     {
-
         $mockRequestBuilder = $this->createMock(RequestBuilderInterface::class);
         $mockRequestBuilder
             ->expects(self::once())
@@ -43,7 +45,7 @@ class SymbolServiceTest extends TestCase
         $mockRequestBuilder
             ->expects(self::once())
             ->method('send')
-            ->willReturn(json_encode(self::LIST_OF_SYMBOLS, true));
+            ->willReturn(\json_encode(self::LIST_OF_SYMBOLS));
 
         $this->externalSymbolService = new SymbolService($mockRequestBuilder, self::LINK_TO_RESOURCE);
     }

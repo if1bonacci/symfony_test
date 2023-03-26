@@ -9,9 +9,9 @@ class AfterDtoCreatedEvent extends Event
 {
     public const NAME = 'dto.created';
 
-    public function __construct(protected DTOInterface $dto)
-    {
-    }
+    public function __construct(
+        protected DTOInterface $dto
+    ) {}
 
     public function getDto(): DTOInterface
     {

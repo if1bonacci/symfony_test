@@ -4,7 +4,10 @@ namespace App\Exception;
 
 class ApiExceptionData implements ApiExceptionDataInterface
 {
-    public function __construct(protected int $statusCode, protected string $type){}
+    public function __construct(
+        protected int $statusCode,
+        protected string $type
+    ) {}
 
     public function getStatusCode(): int
     {

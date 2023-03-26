@@ -8,15 +8,18 @@ use App\Message\MessageInterface;
 use App\Service\Notification\EmailNotification;
 use App\Service\Symbol\SymbolInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\RawMessage;
 
 class EmailNotificationTest extends TestCase
 {
     const COMPANY_NAME = 'Apple inc.';
+
     public function testSuccess()
     {
         $mockRawMessage = $this->createMock(RawMessage::class);
+        $mockLogger = $this->createMock(LoggerInterface::class);
 
         $mockMailer = $this->createMock(MailerInterface::class);
         $mockMailer
@@ -44,7 +47,7 @@ class EmailNotificationTest extends TestCase
             ->with(self::COMPANY_NAME)
             ->willReturn($mockMessage);
 
-        $emailNotification = new EmailNotification($mockMailer, $mockSymbol);
+        $emailNotification = new EmailNotification($mockMailer, $mockSymbol, $mockLogger);
         $emailNotification->send($mockMessage);
     }
 }
