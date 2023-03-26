@@ -24,7 +24,7 @@ class ApiController
     }
 
     #[Route('/list-of-symbols', methods: ['GET'])]
-    #[Cache(public: true, maxage: self::CACHING_TIME, mustRevalidate: true)]
+    #[Cache(maxage: self::CACHING_TIME, public: true, mustRevalidate: true)]
     public function listOfSymbols(SymbolInterface $symbolsList): JsonResponse
     {
         return new JsonResponse(
