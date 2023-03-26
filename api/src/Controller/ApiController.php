@@ -7,6 +7,7 @@ use App\Service\Symbol\SymbolInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 
 #[Route('/api')]
 class ApiController
@@ -21,6 +22,7 @@ class ApiController
     }
 
     #[Route('/list-of-symbols', methods: ['GET'])]
+    #[Cache(public: true, maxage: 3600, mustRevalidate: true)]
     public function listOfSymbols(SymbolInterface $symbolsList): JsonResponse
     {
         return new JsonResponse(
