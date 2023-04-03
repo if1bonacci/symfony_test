@@ -114,8 +114,8 @@ function MyForm () {
     }
     await validate(data).then(async () => {
       await axiosInstance.post('/prices-list', {
-        startDate: data.startDate.toLocaleDateString(),
-        endDate: data.endDate.toLocaleDateString(),
+        startDate: data.startDate.toISOString().split('T')[ 0 ],
+        endDate: data.endDate.toISOString().split('T')[ 0 ],
         symbol: data.symbol,
         email: data.email,
       })
